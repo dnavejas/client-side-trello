@@ -2,4 +2,12 @@
     height: 98vh;
     width: 99%;
     display: flex;
+    border: solid 1px;
+}
+.newlane{
+    display: flex;
+    width: 33%;
+    flex-basis: 200px;
+    background-color: aqua;
+    border: 1px solid black;
 }
