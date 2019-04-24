@@ -22,16 +22,19 @@ function addList() {
 	//create title for each list
 	var listTitle = document.createElement("input");
 	listTitle.setAttribute("class", "list-title");
+	listTitle.setAttribute("id", "title-value");
 	listTitle.setAttribute("placeholder", "Enter Title Here");
 	swimlane.appendChild(listTitle);
 	
 	//create "submit" button
 	var submitbtn = document.createElement("input");
-	submitbtn.setAttribute("id", "title-submit")
+	var br = document.createElement("br"); 
 	submitbtn.setAttribute("type", "button");
+	submitbtn.setAttribute("id", "title-btn");
 	submitbtn.setAttribute("value", "submit");
 	submitbtn.setAttribute("onclick", "setListTitle()");
 	swimlane.appendChild(submitbtn);
+	swimlane.appendChild(br);
 	
 	
 	//create a "move swimlane left" button
@@ -232,7 +235,20 @@ function moveCard() {
 	}
 }
 function setListTitle(){
-	var titleTxt = document.getElementById("title-submit").value;
-	
+	var titleBtn = document.getElementById("title-btn");
+	var swimlane = document.querySelector(".swimlane");
+	var title = document.getElementById("title-value");
+	var titleTxt = title.value;
+	var setTitle = document.createElement("h2");
+	setTitle.setAttribute("class", "list-title");
+	setTitle.innerHTML = titleTxt;
+	titleBtn.value = "Edit Title"
+	titleBtn.setAttribute("onclick", "createTitle()");
+	titleBtn.innerHTML = "<br>";
+
+	swimlane.insertBefore(setTitle, titleBtn);
+
+	title.parentNode.removeChild(title);
+
 
 }
