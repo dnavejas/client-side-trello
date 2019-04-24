@@ -7,9 +7,9 @@
 
 			var id = "swimlane" + swimlaneID;
 
+			var container = document.querySelector(".container");
 			//create a swimlane
 			var swimlane = document.createElement("DIV");
-
 			//set id attribute
     		swimlane.setAttribute("id", id);
     		swimlane.setAttribute("data-swimlane-id", swimlaneID);
@@ -17,8 +17,21 @@
 			swimlane.setAttribute("class", "swimlane");
 
 			//add to the container
-			document.querySelector(".container").appendChild(swimlane);
+			container.appendChild(swimlane);
 
+			//create title for each list
+			var listTitle = document.createElement("input");
+			//set class for list title
+			listTitle.setAttribute("class", "list-title");
+			listTitle.setAttribute("placeholder", "Enter Title Here");
+			swimlane.appendChild(listTitle);
+			
+			var submitbtn = document.createElement("input");
+			submitbtn.setAttribute("type", "button");
+			submitbtn.setAttribute("value", "submit");
+			swimlane.appendChild(submitbtn);
+			
+			
 			//create a "move swimlane left" button
 			var btnMoveSwimlaneLeft = document.createElement("INPUT");
 			btnMoveSwimlaneLeft.setAttribute("type", "button");
@@ -65,6 +78,7 @@
 
 			let container = document.querySelector(".container");
 			let swimlane = document.getElementById("swimlane" + slid);
+			
 
 			container.removeChild(swimlane);
 		}
@@ -118,8 +132,8 @@
 
 			card.appendChild(cardButtons);
 
-			var title = document.createElement("input");
-			title.value = txtTitle;
+			var title = document.createElement("h3");
+			title.innerHTML = txtTitle;
 			card.appendChild(title);
 
 			var desc = document.createElement("p");
