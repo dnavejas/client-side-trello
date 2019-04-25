@@ -30,9 +30,10 @@ function addList() {
 	var submitbtn = document.createElement("input");
 	var br = document.createElement("br"); 
 	submitbtn.setAttribute("type", "button");
-	submitbtn.setAttribute("id", "title-btn");
+	submitbtn.setAttribute("id", "title-btn" + id);
 	submitbtn.setAttribute("value", "submit");
-	submitbtn.setAttribute("onclick", "setListTitle()");
+	submitbtn.addEventListener("click", setListTitle)
+	// submitbtn.setAttribute("onclick", "setListTitle()");
 	swimlane.appendChild(submitbtn);
 	swimlane.appendChild(br);
 	
@@ -234,9 +235,15 @@ function moveCard() {
 		card.dataset.swimlaneId = rightSlid;
 	}
 }
-function setListTitle(){
-	var titleBtn = document.getElementById("title-btn");
-	var swimlane = document.querySelector(".swimlane");
+function setListTitle(e){
+	let parent = this.parentElement // get the first parent
+
+	let inputs = [];
+	parent.childNodes.forEach(childNode => {
+		if (childNode.value === "submit") inputs.push(childNode)
+	})
+
+	var titleBtn = inputs[0]
 	var title = document.getElementById("title-value");
 	var titleTxt = title.value;
 	var setTitle = document.createElement("h2");
@@ -246,7 +253,7 @@ function setListTitle(){
 	titleBtn.setAttribute("onclick", "createTitle()");
 	titleBtn.innerHTML = "<br>";
 
-	swimlane.insertBefore(setTitle, titleBtn);
+	parent.insertBefore(setTitle, titleBtn);
 
 	title.parentNode.removeChild(title);
 
