@@ -74,11 +74,6 @@ function addList() {
 	btnMoveSwimlaneRight.addEventListener("click", moveSwimlane);
 	swimlane.appendChild(btnMoveSwimlaneRight);
 }
-
-//delete a swimlane
-//	delete all cards in a swimlane?
-//	prompt "are you sure you want to delete the swimlane"
-//	prompt "move cards to a new swimlane"
 function deleteSwimlane() {
 	let slid = this.dataset.swimlaneId;
 
@@ -87,8 +82,6 @@ function deleteSwimlane() {
 
 	container.removeChild(swimlane);
 }
-
-//add a card to swimlane
 function addCard() {
 	cardID++;
 
@@ -148,11 +141,6 @@ function addCard() {
 	let swimlane = document.querySelector("#swimlane" + slid);
 	swimlane.appendChild(card);
 }
-
-
-//edit the name of a card
-
-//delete a card from a swimlane
 function deleteCard() {
 	let slid = this.parentNode.parentNode.dataset.swimlaneId; 
 	let cid = this.dataset.cardId;
@@ -162,10 +150,6 @@ function deleteCard() {
 
 	swimlane.removeChild(card);
 }
-
-//ability to move a card up or down in the swimlane
-
-//move swimlane to left or right
 function moveSwimlane() {
 	let slid = this.dataset.swimlaneId;
 	let swimlane = document.querySelector("#swimlane" + slid);
@@ -188,13 +172,6 @@ function moveSwimlane() {
 		container.insertBefore(swimlane, container.childNodes[++nidx]);
 	}
 }
-
-
-//add a name to the swimlane
-//edit the swimlane name
-
-
-//move a card to next or previous swimlane
 function moveCard() {
 	let slid = this.parentNode.parentNode.dataset.swimlaneId;
 	let cid = this.dataset.cardId;
@@ -236,26 +213,39 @@ function moveCard() {
 	}
 }
 function setListTitle(e){
-	let parent = this.parentElement // get the first parent
+	let parent = this.parentElement; // get the first parent
+	var editID = "edit" + swimlaneID // set id for edit button
 
 	let inputs = [];
 	parent.childNodes.forEach(childNode => {
 		if (childNode.value === "submit") inputs.push(childNode)
-	})
+	});
 
-	var titleBtn = inputs[0]
+	var titleBtn = inputs[0];
 	var title = document.getElementById("title-value");
 	var titleTxt = title.value;
 	var setTitle = document.createElement("h2");
 	setTitle.setAttribute("class", "list-title");
 	setTitle.innerHTML = titleTxt;
-	titleBtn.value = "Edit Title"
-	titleBtn.setAttribute("onclick", "createTitle()");
+	titleBtn.value = "Edit Title";
+	titleBtn.setAttribute("onclick", "editTitle()");
+	titleBtn.setAttribute("id" , editID);
+
 	titleBtn.innerHTML = "<br>";
 
 	parent.insertBefore(setTitle, titleBtn);
 
 	title.parentNode.removeChild(title);
-
-
+}
+function editTitle(){
+	var editID = "edit" + swimlaneID;
+	var editValue = document.querySelector("#" + editID);
+	editValue.value = "submit";
+	editValue.setAttribute("onclick", "setListTitle()");
+	// var parent = this.
+	var titleTxt = document.getElementById("swimlane" + swimlaneID).childNodes[0].innerHTML;
+	console.log(titleTxt);
+	
+	
+	
 }
