@@ -21,8 +21,7 @@ function addList() {
 
 	//create title for each list
 	var listTitle = document.createElement("input");
-	listTitle.setAttribute("class", "list-title");
-	listTitle.setAttribute("id", "title-value");
+	listTitle.setAttribute("id", "title-value" + swimlaneID);
 	listTitle.setAttribute("placeholder", "Enter Title Here");
 	swimlane.appendChild(listTitle);
 	
@@ -213,6 +212,7 @@ function moveCard() {
 	}
 }
 function setListTitle(e){
+	console.log(this, e);
 	let parent = this.parentElement; // get the first parent
 	var editID = "edit" + swimlaneID // set id for edit button
 
@@ -222,18 +222,22 @@ function setListTitle(e){
 	});
 
 	var titleBtn = inputs[0];
-	var title = document.getElementById("title-value");
+	var title = document.getElementById("title-value" + swimlaneID);
 	var titleTxt = title.value;
 	var setTitle = document.createElement("h2");
 	setTitle.setAttribute("class", "list-title");
 	setTitle.innerHTML = titleTxt;
-	titleBtn.value = "Edit Title";
-	titleBtn.setAttribute("onclick", "editTitle()");
-	titleBtn.setAttribute("id" , editID);
+
+	var editBtn = document.createElement("input");
+	editBtn.setAttribute("onclick", "editTitle()");
+	editBtn.setAttribute("id" , editID);
+	editBtn.setAttribute("type", "button");
+	editBtn.setAttribute("value", "Edit This Title");	
 
 	titleBtn.innerHTML = "<br>";
 
 	parent.insertBefore(setTitle, titleBtn);
+	parent.replaceChild(editBtn, titleBtn);
 
 	title.parentNode.removeChild(title);
 }
@@ -241,11 +245,21 @@ function editTitle(){
 	var editID = "edit" + swimlaneID;
 	var editValue = document.querySelector("#" + editID);
 	editValue.value = "submit";
-	editValue.setAttribute("onclick", "setListTitle()");
-	// var parent = this.
-	var titleTxt = document.getElementById("swimlane" + swimlaneID).childNodes[0].innerHTML;
-	console.log(titleTxt);
+	// editValue.setAttribute("onclick", "setListTitle()");
 	
-	
-	
+	//grab the the swimlane
+	var swimlane = document.getElementById("swimlane" + swimlaneID);
+	//grab the title for the swimlane
+	var title = swimlane.childNodes[0];
+	var titleTxt = title.innerHTML;
+
+	//create title for each list
+	var listTitle = document.createElement("input");
+	listTitle.setAttribute("class", "list-title");
+	listTitle.setAttribute("id", "title-value" + swimlaneID);
+	listTitle.setAttribute("value", titleTxt);
+	swimlane.insertBefore(listTitle, editValue);	
+
+	swimlane.removeChild(title);	
+	editValue.onclick = setListTitle;
 }
