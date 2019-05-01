@@ -79,8 +79,59 @@ function deleteSwimlane() {
 	let container = document.querySelector(".container");
 	let swimlane = document.getElementById("swimlane" + slid);
 
-	container.removeChild(swimlane);
+	let leftSlid;
+	let rightSlid;
+	let left;
+	let right;
+
+	let arrCards = [];
+	let cards = swimlane.getElementsByClassName("card");
+	for (let i=0; i<cards.length; i++){
+		arrCards.push(cards);
+	}
+
+	//try to get left swimlane data, may not exist
+	try {
+		left = document.querySelector("#swimlane" + slid).previousElementSibling;
+		console.log(left);
+		leftSlid = left.dataset.swimlaneId;
+	}
+	catch (e) {
+	}
+
+	//try to get right swimlane data, may not exist
+	try {
+		right = document.querySelector("#swimlane" + slid).nextElementSibling;
+		console.log(right);
+		rightSlid = right.dataset.swimlaneId;
+	}
+	catch (e) {
+	
+	}
+	
+	let remove = confirm("If you want to delete this lane click ok. Otherwise click cancel.")
+
+	if (remove == true) {
+		var moveCards = confirm("To move all cards to another lane, click ok.");
+		if (moveCards == true){
+			if(left != null) {
+				console.dir(left);
+				console.dir(arrCards);
+				left.appendChild(arrCards);
+			}
+			else if(right != null) {
+				console.dir(right);
+				console.dir(arrCards);
+				right.appendChild(arrCards);
+			}
+			
+		}
+		container.removeChild(swimlane);
+	} else {
+		return false;
+	}
 }
+
 function addCard() {
 	cardID++;
 
@@ -160,11 +211,7 @@ function moveSwimlane() {
 	let nidx = Array.prototype.indexOf.call(container.children, next);
 	let cidx = Array.prototype.indexOf.call(container.children, swimlane);
 
-	console.log(this.dataset.direction);
-	console.log(swimlane);
-
 	if(this.dataset.direction == "left") {
-		// list.insertBefore(newItem, list.childNodes[0]);
 		container.insertBefore(swimlane, container.childNodes[pidx]);
 	}
 	else if (this.dataset.direction == "right") {
