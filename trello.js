@@ -211,55 +211,42 @@ function moveCard() {
 		card.dataset.swimlaneId = rightSlid;
 	}
 }
-function setListTitle(e){
-	console.log(this, e);
-	let parent = this.parentElement; // get the first parent
-	var editID = "edit" + swimlaneID // set id for edit button
+function setListTitle(){
+	let titleBtn = this;
+	let swimlane = this.parentElement; // get the first parent
 
-	let inputs = [];
-	parent.childNodes.forEach(childNode => {
-		if (childNode.value === "submit") inputs.push(childNode)
-	});
-
-	var titleBtn = inputs[0];
-	var title = document.getElementById("title-value" + swimlaneID);
+	var title = swimlane.firstChild;
 	var titleTxt = title.value;
 	var setTitle = document.createElement("h2");
 	setTitle.setAttribute("class", "list-title");
 	setTitle.innerHTML = titleTxt;
 
 	var editBtn = document.createElement("input");
-	editBtn.setAttribute("onclick", "editTitle()");
-	editBtn.setAttribute("id" , editID);
 	editBtn.setAttribute("type", "button");
-	editBtn.setAttribute("value", "Edit This Title");	
+	editBtn.setAttribute("value", "Edit This Title");
+	editBtn.setAttribute("onclick", "editTitle(event)");	
 
 	titleBtn.innerHTML = "<br>";
 
-	parent.insertBefore(setTitle, titleBtn);
-	parent.replaceChild(editBtn, titleBtn);
+	swimlane.insertBefore(setTitle, titleBtn);
+	swimlane.replaceChild(editBtn, titleBtn);
 
 	title.parentNode.removeChild(title);
 }
-function editTitle(){
-	var editID = "edit" + swimlaneID;
-	var editValue = document.querySelector("#" + editID);
-	editValue.value = "submit";
-	// editValue.setAttribute("onclick", "setListTitle()");
-	
-	//grab the the swimlane
-	var swimlane = document.getElementById("swimlane" + swimlaneID);
-	//grab the title for the swimlane
-	var title = swimlane.childNodes[0];
-	var titleTxt = title.innerHTML;
+function editTitle(e){
+	const editButton = e.target;
+	const swimlane = editButton.parentNode
+
+	const swimlaneTitle = swimlane.firstChild;
 
 	//create title for each list
 	var listTitle = document.createElement("input");
 	listTitle.setAttribute("class", "list-title");
-	listTitle.setAttribute("id", "title-value" + swimlaneID);
-	listTitle.setAttribute("value", titleTxt);
-	swimlane.insertBefore(listTitle, editValue);	
-
-	swimlane.removeChild(title);	
-	editValue.onclick = setListTitle;
+	listTitle.setAttribute("id", "title-value");
+	listTitle.setAttribute("value", swimlaneTitle.innerText);
+	swimlane.insertBefore(listTitle, editButton);	
+	//set button value back to submit
+	editButton.setAttribute("value", "submit");
+	swimlane.removeChild(swimlaneTitle);	
+	editButton.onclick = setListTitle;
 }
