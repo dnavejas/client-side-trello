@@ -264,21 +264,6 @@ function moveCard() {
 	}
 
 	//try to get card data above this card
-	try {
-		up = this.parentElement.parentElement.previousElementSibling;
-	}
-	catch(e){
-		console.error(e);
-	}
-
-	//try to get card data below this card
-	try {
-		down = this.parentElement.parentElement.nextElementSibling;
-	}
-	catch(e){
-		console.error(e);
-	}
-
 	let direction = this.dataset.moveDirection;
 
 	if(left != null && direction == "left") {
@@ -289,13 +274,15 @@ function moveCard() {
 		right.appendChild(card);
 		card.dataset.swimlaneId = rightSlid;
 	}
-	else if(up != null && direction == "up") {
-		console.log(up);
-		console.log(card);
+	else if(direction == "up") {
+		up = this.parentElement.parentElement.previousElementSibling;
+		// extra logic
 		swimlane.insertBefore(card, up);
 	}
-	else if(down != null && direction == "down") {
-		// down.appendChild(card);
+	else if(direction == "down") {
+		down = this.parentElement.parentElement.nextElementSibling.nextElementSibling;
+		// extra logic
+		swimlane.insertBefore(card, down);
 		
 	}
 }
