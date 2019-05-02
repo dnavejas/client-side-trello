@@ -83,16 +83,14 @@ function deleteSwimlane() {
 	let left;
 	let right;
 
-	let arrCards = [];
 	let cards = swimlane.getElementsByClassName("card");
-	for (let i=0; i<cards.length; i++){
-		arrCards.push(cards);
-	}
+	console.log(cards);
+	let cardsArray = Array.from(cards);
+	console.log(cardsArray);
 	function checkForSL(){
 		//try to get left swimlane data, may not exist
 		try {
 			left = document.querySelector("#swimlane" + slid).previousElementSibling;
-			console.log(left);
 			leftSlid = left.dataset.swimlaneId;
 		}
 		catch (e) {
@@ -101,7 +99,6 @@ function deleteSwimlane() {
 		//try to get right swimlane data, may not exist
 		try {
 			right = document.querySelector("#swimlane" + slid).nextElementSibling;
-			console.log(right);
 			rightSlid = right.dataset.swimlaneId;
 		}
 		catch (e) {
@@ -115,15 +112,12 @@ function deleteSwimlane() {
 		checkForSL();
 		let moveCards = confirm("To move all cards to another lane, click ok.");
 		if (moveCards == true){
-			if(left != null) {
-				console.dir(left);
-				console.dir(arrCards);
-				left.appendChild(arrCards);
+			if(left != null && cards.length != 0) {
+				
+				left.appendChild(...cardsArray);
 			}
-			else if(right != null) {
-				console.dir(right);
-				console.dir(arrCards);
-				right.appendChild(arrCards);
+			else if(right != null && cards.length != 0) {
+				right.appendChild(...cardsArray);
 			}
 			
 		}
@@ -132,7 +126,6 @@ function deleteSwimlane() {
 		return false;
 	}
 }
-
 function addCard() {
 	cardID++;
 	let slid = this.dataset.swimlaneId; 
@@ -191,6 +184,7 @@ function addCard() {
 	cardButtons.appendChild(btnMoveRight);
 
 	card.appendChild(cardButtons);
+	
 
 	var title = document.createElement("h3");
 	title.innerHTML = txtTitle;
@@ -230,13 +224,13 @@ function moveSwimlane() {
 		container.insertBefore(swimlane, container.childNodes[++nidx]);
 	}
 }
-function moveCard() {
+function moveCard(e) {
 	let swimlane = this.parentNode.parentNode.parentNode;
-	console.log(swimlane)
 	let slid = this.parentNode.parentNode.dataset.swimlaneId;
 	let cid = this.dataset.cardId;
 
 	let card = document.querySelector("#card" + cid);
+	console.log(card);
 
 	let leftSlid;
 	let rightSlid;
@@ -250,18 +244,14 @@ function moveCard() {
 		left = document.querySelector("#swimlane" + slid).previousSibling;
 		leftSlid = left.dataset.swimlaneId;
 	}
-	catch (e) {
-		console.error(e);
-	}
+	catch (e) {}
 
 	//try to get right swimlane data, may not exist
 	try {
 		right = document.querySelector("#swimlane" + slid).nextSibling;
 		rightSlid = right.dataset.swimlaneId;
 	}
-	catch (e) {
-		console.error(e);
-	}
+	catch (e) {}
 
 	//try to get card data above this card
 	let direction = this.dataset.moveDirection;
