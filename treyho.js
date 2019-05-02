@@ -137,6 +137,7 @@ function addCard() {
 	var cardTitle = document.createElement("input");
 	cardTitle.setAttribute("id", "card-title" + cardID)
 	cardTitle.setAttribute("type", "text");
+	cardTitle.setAttribute("placeholder", "Enter Card Title here")
 	card.appendChild(cardTitle);
 
 	var cardTitleBtn = document.createElement("input");
@@ -196,6 +197,19 @@ function addCard() {
 
 	card.appendChild(cardButtons);
 
+	var cardDesc = document.createElement("textarea");
+	cardDesc.setAttribute("id", "card-desc" + cardID);
+	cardDesc.setAttribute("placeholder", "Enter description here");
+	card.appendChild(cardDesc);
+
+	var descSubmitBtn = document.createElement("input");
+	descSubmitBtn.setAttribute("id", "desc-submit-btn" + cardID);
+	descSubmitBtn.setAttribute("value", "submit");
+	descSubmitBtn.setAttribute("type", "button");
+	descSubmitBtn.addEventListener("click", setDescription);
+	card.appendChild(descSubmitBtn);
+
+
 	let swimlane = document.querySelector("#swimlane" + slid);
 	swimlane.appendChild(card);
 }
@@ -207,7 +221,7 @@ function deleteCard() {
 	let card = document.querySelector("#card" + cid);
 
 	swimlane.removeChild(card);
-}
+};
 function moveSwimlane() {
 	let slid = this.dataset.swimlaneId;
 	let swimlane = document.querySelector("#swimlane" + slid);
@@ -225,14 +239,14 @@ function moveSwimlane() {
 	else if (this.dataset.direction == "right") {
 		container.insertBefore(swimlane, container.childNodes[++nidx]);
 	}
-}
+};
 function moveCard(e) {
 	let swimlane = this.parentNode.parentNode.parentNode;
 	let slid = this.parentNode.parentNode.dataset.swimlaneId;
 	let cid = this.dataset.cardId;
 
 	let card = document.querySelector("#card" + cid);
-	
+
 	let leftSlid;
 	let rightSlid;
 	let left;
@@ -276,7 +290,7 @@ function moveCard(e) {
 		swimlane.insertBefore(card, down);
 		
 	}
-}
+};
 function setCardTitle(){
 	let cTitleBtn = this;
 	let card = this.parentElement;
@@ -299,7 +313,7 @@ function setCardTitle(){
 	cTitle.parentNode.removeChild(cTitle);
 
 	
-}
+};
 function editCardTitle(e){
 	const cardEditBtn = e.target;
 	const card = cardEditBtn.parentNode;
@@ -314,7 +328,7 @@ function editCardTitle(e){
 	cardEditBtn.setAttribute("value", "submit");
 	card.removeChild(cardTitle);	
 	cardEditBtn.onclick = setListTitle;
-}
+};
 function setListTitle(){
 	let slTitleBtn = this;
 	let swimlane = this.parentElement; // get the first parent
@@ -336,7 +350,7 @@ function setListTitle(){
 	swimlane.replaceChild(slEditBtn, slTitleBtn);
 
 	slTitle.parentNode.removeChild(slTitle);
-}
+};
 function editSlTitle(e){
 	const editButton = e.target;
 	const swimlane = editButton.parentNode
@@ -353,4 +367,7 @@ function editSlTitle(e){
 	editButton.setAttribute("value", "submit");
 	swimlane.removeChild(swimlaneTitle);	
 	editButton.onclick = setListTitle;
-}
+};
+function setDescription(){
+
+};
