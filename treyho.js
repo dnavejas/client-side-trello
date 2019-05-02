@@ -6,6 +6,7 @@ function addList() {
 	swimlaneID++;
 
 	var id = "swimlane" + swimlaneID;
+	var br = document.createElement("br");
 
 	var container = document.querySelector(".container");
 	//create a swimlane
@@ -33,6 +34,7 @@ function addList() {
 	submitbtn.addEventListener("click", setListTitle)
 	submitbtn.innerHTML = "<br>";
 	swimlane.appendChild(submitbtn);
+	swimlane.appendChild(br);
 	
 	
 	//create a "move swimlane left" button
@@ -310,9 +312,7 @@ function setCardTitle(){
 	card.insertBefore(setCTitle, cTitleBtn);
 	card.replaceChild(cardEditBtn, cTitleBtn);
 
-	cTitle.parentNode.removeChild(cTitle);
-
-	
+	cTitle.parentNode.removeChild(cTitle);	
 };
 function editCardTitle(e){
 	const cardEditBtn = e.target;
@@ -324,15 +324,13 @@ function editCardTitle(e){
 	newCardTitle.setAttribute("id", "title-value");
 	newCardTitle.setAttribute("value", cardTitle.innerText);
 	card.insertBefore(newCardTitle, cardEditBtn);	
-	//set button value back to submit
 	cardEditBtn.setAttribute("value", "submit");
 	card.removeChild(cardTitle);	
 	cardEditBtn.onclick = setListTitle;
 };
 function setListTitle(){
 	let slTitleBtn = this;
-	let swimlane = this.parentElement; // get the first parent
-
+	let swimlane = this.parentElement;
 	var slTitle = swimlane.firstChild;
 	var slTitleTxt = slTitle.value;
 	var setSlTitle = document.createElement("h2");
@@ -342,9 +340,7 @@ function setListTitle(){
 	var slEditBtn = document.createElement("input");
 	slEditBtn.setAttribute("type", "button");
 	slEditBtn.setAttribute("value", "Edit This Title");
-	slEditBtn.setAttribute("onclick", "editSlTitle(event)");	
-
-	slTitleBtn.innerHTML = "<br>";
+	slEditBtn.setAttribute("onclick", "editSlTitle(event)");
 
 	swimlane.insertBefore(setSlTitle, slTitleBtn);
 	swimlane.replaceChild(slEditBtn, slTitleBtn);
@@ -369,5 +365,23 @@ function editSlTitle(e){
 	editButton.onclick = setListTitle;
 };
 function setDescription(){
+	let cardDescBtn = this;
+	let card = this.parentElement;
+	var cardDesc = card.children[3];
+	var cardDescTxt = cardDesc.value;
+	var cardDescription = document.createElement("p");
+	cardDescription.setAttribute("class", "card-desc");
+	cardDescription.innerHTML = cardDescTxt;
 
+	var cDescBtn = document.createElement("input");
+	cDescBtn.setAttribute("type", "button");
+	cDescBtn.setAttribute("value", "Edit This Description");
+	cDescBtn.setAttribute("onclick", "editCDesc(event)");
+
+	card.insertBefore(cardDescription, cardDescBtn);
+	card.replaceChild(cDescBtn, cardDescBtn);
+
+	cardDesc.parentNode.removeChild(cardDesc);
 };
+function editCDesc(){
+}
