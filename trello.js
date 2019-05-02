@@ -129,8 +129,6 @@ function addCard() {
 	cardID++;
 	let cID = "card" + cardID;
 	let slid = this.dataset.swimlaneId; 
-	var txtTitle = prompt("Name your card:");
-	var txtDescription = prompt("Description of your task:");
 	var card = document.createElement("DIV");
 	card.setAttribute("id", "card" + cardID); 
 	card.setAttribute("class", "card");
@@ -139,7 +137,6 @@ function addCard() {
 	var cardTitle = document.createElement("input");
 	cardTitle.setAttribute("id", "card-title" + cardID)
 	cardTitle.setAttribute("type", "text");
-	cardTitle.innerHTML = txtTitle;
 	card.appendChild(cardTitle);
 
 	var cardTitleBtn = document.createElement("input");
@@ -149,7 +146,6 @@ function addCard() {
 	cardTitleBtn.addEventListener("click", setCardTitle);
 	cardTitleBtn.innerHTML = "<br>";
 	card.appendChild(cardTitleBtn);
-
 
 	var cardButtons = document.createElement("div");
 	cardButtons.setAttribute("class", "card-buttons");
@@ -199,10 +195,6 @@ function addCard() {
 	cardButtons.appendChild(btnMoveRight);
 
 	card.appendChild(cardButtons);
-
-	var desc = document.createElement("p");
-	desc.innerHTML = txtDescription;
-	card.appendChild(desc);
 
 	let swimlane = document.querySelector("#swimlane" + slid);
 	swimlane.appendChild(card);
