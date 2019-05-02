@@ -25,14 +25,13 @@ function addList() {
 	listTitle.setAttribute("placeholder", "Enter Title Here");
 	swimlane.appendChild(listTitle);
 	
-	//create "submit" button
+	//create a "submit" button
 	var submitbtn = document.createElement("input");
 	var br = document.createElement("br"); 
 	submitbtn.setAttribute("type", "button");
 	submitbtn.setAttribute("id", "title-btn" + id);
 	submitbtn.setAttribute("value", "submit");
 	submitbtn.addEventListener("click", setListTitle)
-	// submitbtn.setAttribute("onclick", "setListTitle()");
 	swimlane.appendChild(submitbtn);
 	swimlane.appendChild(br);
 	
@@ -40,7 +39,7 @@ function addList() {
 	//create a "move swimlane left" button
 	var btnMoveSwimlaneLeft = document.createElement("INPUT");
 	btnMoveSwimlaneLeft.setAttribute("type", "button");
-	btnMoveSwimlaneLeft.setAttribute("value", "◀️");
+	btnMoveSwimlaneLeft.setAttribute("value", "⇐");
 	btnMoveSwimlaneLeft.setAttribute("data-swimlane-id", swimlaneID);
 	btnMoveSwimlaneLeft.setAttribute("data-direction", "left");
 	btnMoveSwimlaneLeft.addEventListener("click", moveSwimlane);
@@ -67,7 +66,7 @@ function addList() {
 	//create a "move swimlane right" button
 	var btnMoveSwimlaneRight = document.createElement("INPUT");
 	btnMoveSwimlaneRight.setAttribute("type", "button");
-	btnMoveSwimlaneRight.setAttribute("value", "▶️");
+	btnMoveSwimlaneRight.setAttribute("value", "⇒");
 	btnMoveSwimlaneRight.setAttribute("data-swimlane-id", swimlaneID);
 	btnMoveSwimlaneRight.setAttribute("data-direction", "right");
 	btnMoveSwimlaneRight.addEventListener("click", moveSwimlane);
@@ -89,30 +88,32 @@ function deleteSwimlane() {
 	for (let i=0; i<cards.length; i++){
 		arrCards.push(cards);
 	}
+	function checkForSL(){
+		//try to get left swimlane data, may not exist
+		try {
+			left = document.querySelector("#swimlane" + slid).previousElementSibling;
+			console.log(left);
+			leftSlid = left.dataset.swimlaneId;
+		}
+		catch (e) {
+		}
 
-	//try to get left swimlane data, may not exist
-	try {
-		left = document.querySelector("#swimlane" + slid).previousElementSibling;
-		console.log(left);
-		leftSlid = left.dataset.swimlaneId;
-	}
-	catch (e) {
-	}
-
-	//try to get right swimlane data, may not exist
-	try {
-		right = document.querySelector("#swimlane" + slid).nextElementSibling;
-		console.log(right);
-		rightSlid = right.dataset.swimlaneId;
-	}
-	catch (e) {
-	
+		//try to get right swimlane data, may not exist
+		try {
+			right = document.querySelector("#swimlane" + slid).nextElementSibling;
+			console.log(right);
+			rightSlid = right.dataset.swimlaneId;
+		}
+		catch (e) {
+		
+		}
 	}
 	
 	let remove = confirm("If you want to delete this lane click ok. Otherwise click cancel.")
 
 	if (remove == true) {
-		var moveCards = confirm("To move all cards to another lane, click ok.");
+		checkForSL();
+		let moveCards = confirm("To move all cards to another lane, click ok.");
 		if (moveCards == true){
 			if(left != null) {
 				console.dir(left);
@@ -134,16 +135,9 @@ function deleteSwimlane() {
 
 function addCard() {
 	cardID++;
-
-	//get the swimlane id from the button that was clicked
 	let slid = this.dataset.swimlaneId; 
-
 	var txtTitle = prompt("Name your card:");
 	var txtDescription = prompt("Description of your task:");
-
-	//	add a name to the card
-	//	add a description to the card
-
 	var card = document.createElement("DIV");
 	card.setAttribute("id", "card" + cardID); 
 	card.setAttribute("class", "card");
@@ -155,11 +149,20 @@ function addCard() {
 	var btnMoveLeft = document.createElement("input");
 	btnMoveLeft.setAttribute("id", "btnMoveLeft" + cardID);
 	btnMoveLeft.setAttribute("type", "button");
-	btnMoveLeft.setAttribute("value", "◀️");
+	btnMoveLeft.setAttribute("value", "⇐");
 	btnMoveLeft.setAttribute("data-move-direction","left");
 	btnMoveLeft.setAttribute("data-card-id", cardID);
 	btnMoveLeft.addEventListener("click", moveCard);
 	cardButtons.appendChild(btnMoveLeft);
+
+	var btnMoveUp = document.createElement("input");
+	btnMoveUp.setAttribute("id", "btnMoveUp" + cardID);
+	btnMoveUp.setAttribute("type", "button");
+	btnMoveUp.setAttribute("value", "⇑");
+	btnMoveUp.setAttribute("data-move-direction","up");
+	btnMoveUp.setAttribute("data-card-id", cardID);
+	btnMoveUp.addEventListener("click", moveCard);
+	cardButtons.appendChild(btnMoveUp);
 
 	var btnDelete = document.createElement("input");
 	btnDelete.setAttribute("id", "btnDel" + cardID);
@@ -169,10 +172,19 @@ function addCard() {
 	btnDelete.addEventListener("click", deleteCard);
 	cardButtons.appendChild(btnDelete);
 
+	var btnMoveDown = document.createElement("input");
+	btnMoveDown.setAttribute("id", "btnMoveDown" + cardID);
+	btnMoveDown.setAttribute("type", "button");
+	btnMoveDown.setAttribute("value", "⇓");
+	btnMoveDown.setAttribute("data-move-direction","down");
+	btnMoveDown.setAttribute("data-card-id", cardID);
+	btnMoveDown.addEventListener("click", moveCard);
+	cardButtons.appendChild(btnMoveDown);
+
 	var btnMoveRight = document.createElement("input");
 	btnMoveRight.setAttribute("id", "btnMoveRight" + cardID);
 	btnMoveRight.setAttribute("type", "button");
-	btnMoveRight.setAttribute("value", "▶️");
+	btnMoveRight.setAttribute("value", "⇒");
 	btnMoveRight.setAttribute("data-move-direction","right");
 	btnMoveRight.setAttribute("data-card-id", cardID);
 	btnMoveRight.addEventListener("click", moveCard);
@@ -219,6 +231,8 @@ function moveSwimlane() {
 	}
 }
 function moveCard() {
+	let swimlane = this.parentNode.parentNode.parentNode;
+	console.log(swimlane)
 	let slid = this.parentNode.parentNode.dataset.swimlaneId;
 	let cid = this.dataset.cardId;
 
@@ -228,6 +242,8 @@ function moveCard() {
 	let rightSlid;
 	let left;
 	let right;
+	let up;
+	let down;
 
 	//try to get left swimlane data, may not exist
 	try {
@@ -247,6 +263,22 @@ function moveCard() {
 		console.error(e);
 	}
 
+	//try to get card data above this card
+	try {
+		up = this.parentElement.parentElement.previousElementSibling;
+	}
+	catch(e){
+		console.error(e);
+	}
+
+	//try to get card data below this card
+	try {
+		down = this.parentElement.parentElement.nextElementSibling;
+	}
+	catch(e){
+		console.error(e);
+	}
+
 	let direction = this.dataset.moveDirection;
 
 	if(left != null && direction == "left") {
@@ -256,6 +288,15 @@ function moveCard() {
 	else if(right != null && direction == "right") {
 		right.appendChild(card);
 		card.dataset.swimlaneId = rightSlid;
+	}
+	else if(up != null && direction == "up") {
+		console.log(up);
+		console.log(card);
+		swimlane.insertBefore(card, up);
+	}
+	else if(down != null && direction == "down") {
+		// down.appendChild(card);
+		
 	}
 }
 function setListTitle(){
