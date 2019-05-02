@@ -1,6 +1,6 @@
 'use strict'
 let swimlaneID = 0; 
-let cardID = 0; 
+let cardID = 0;
 
 function addList() {
 	swimlaneID++;
@@ -26,14 +26,13 @@ function addList() {
 	swimlane.appendChild(listTitle);
 	
 	//create a "submit" button
-	var submitbtn = document.createElement("input");
-	var br = document.createElement("br"); 
+	var submitbtn = document.createElement("input"); 
 	submitbtn.setAttribute("type", "button");
 	submitbtn.setAttribute("id", "title-btn" + id);
 	submitbtn.setAttribute("value", "submit");
 	submitbtn.addEventListener("click", setListTitle)
+	submitbtn.innerHTML = "<br>";
 	swimlane.appendChild(submitbtn);
-	swimlane.appendChild(br);
 	
 	
 	//create a "move swimlane left" button
@@ -128,6 +127,7 @@ function deleteSwimlane() {
 }
 function addCard() {
 	cardID++;
+	let cID = "card" + cardID;
 	let slid = this.dataset.swimlaneId; 
 	var txtTitle = prompt("Name your card:");
 	var txtDescription = prompt("Description of your task:");
@@ -135,6 +135,21 @@ function addCard() {
 	card.setAttribute("id", "card" + cardID); 
 	card.setAttribute("class", "card");
 	card.setAttribute("data-swimlane-id", slid);
+
+	var cardTitle = document.createElement("input");
+	cardTitle.setAttribute("id", "card-title" + cardID)
+	cardTitle.setAttribute("type", "text");
+	cardTitle.innerHTML = txtTitle;
+	card.appendChild(cardTitle);
+
+	var cardTitleBtn = document.createElement("input");
+	cardTitleBtn.setAttribute("type", "button");
+	cardTitleBtn.setAttribute("id", "card-title" + cID);
+	cardTitleBtn.setAttribute("value", "submit");
+	cardTitleBtn.addEventListener("click", setCardTitle);
+	cardTitleBtn.innerHTML = "<br>";
+	card.appendChild(cardTitleBtn);
+
 
 	var cardButtons = document.createElement("div");
 	cardButtons.setAttribute("class", "card-buttons");
@@ -184,11 +199,6 @@ function addCard() {
 	cardButtons.appendChild(btnMoveRight);
 
 	card.appendChild(cardButtons);
-	
-
-	var title = document.createElement("h3");
-	title.innerHTML = txtTitle;
-	card.appendChild(title);
 
 	var desc = document.createElement("p");
 	desc.innerHTML = txtDescription;
@@ -276,29 +286,52 @@ function moveCard(e) {
 		
 	}
 }
+function setCardTitle(){
+	let cTitleBtn = this;
+	let card = this.parentElement;
+	let cTitle = card.firstChild;
+	let cTitleTxt = cTitle.value;
+	let setCTitle = document.createElement("h3");
+	setCTitle.setAttribute("class", "c-title");
+	setCTitle.innerHTML = cTitleTxt;
+
+	let cardEditBtn = document.createElement("input");
+	cardEditBtn.setAttribute("type", "button");
+	cardEditBtn.setAttribute("value", "Edit Card Title");
+	cardEditBtn.setAttribute("onclick", "editCardTitle(event)");
+
+	cTitleBtn.innerHTML = "<br";
+
+	card.insertBefore(setCTitle, cTitleBtn);
+	card.replaceChild(cardEditBtn, cTitleBtn);
+
+	cTitle.parentNode.removeChild(cTitle);
+
+	
+}
 function setListTitle(){
-	let titleBtn = this;
+	let slTitleBtn = this;
 	let swimlane = this.parentElement; // get the first parent
 
-	var title = swimlane.firstChild;
-	var titleTxt = title.value;
-	var setTitle = document.createElement("h2");
-	setTitle.setAttribute("class", "list-title");
-	setTitle.innerHTML = titleTxt;
+	var slTitle = swimlane.firstChild;
+	var slTitleTxt = slTitle.value;
+	var setSlTitle = document.createElement("h2");
+	setSlTitle.setAttribute("class", "sl-title");
+	setSlTitle.innerHTML = slTitleTxt;
 
-	var editBtn = document.createElement("input");
-	editBtn.setAttribute("type", "button");
-	editBtn.setAttribute("value", "Edit This Title");
-	editBtn.setAttribute("onclick", "editTitle(event)");	
+	var slEditBtn = document.createElement("input");
+	slEditBtn.setAttribute("type", "button");
+	slEditBtn.setAttribute("value", "Edit This Title");
+	slEditBtn.setAttribute("onclick", "editSlTitle(event)");	
 
-	titleBtn.innerHTML = "<br>";
+	slTitleBtn.innerHTML = "<br>";
 
-	swimlane.insertBefore(setTitle, titleBtn);
-	swimlane.replaceChild(editBtn, titleBtn);
+	swimlane.insertBefore(setSlTitle, slTitleBtn);
+	swimlane.replaceChild(slEditBtn, slTitleBtn);
 
-	title.parentNode.removeChild(title);
+	slTitle.parentNode.removeChild(slTitle);
 }
-function editTitle(e){
+function editSlTitle(e){
 	const editButton = e.target;
 	const swimlane = editButton.parentNode
 
