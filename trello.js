@@ -232,8 +232,7 @@ function moveCard(e) {
 	let cid = this.dataset.cardId;
 
 	let card = document.querySelector("#card" + cid);
-	console.log(card);
-
+	
 	let leftSlid;
 	let rightSlid;
 	let left;
@@ -300,6 +299,21 @@ function setCardTitle(){
 	cTitle.parentNode.removeChild(cTitle);
 
 	
+}
+function editCardTitle(e){
+	const cardEditBtn = e.target;
+	const card = cardEditBtn.parentNode;
+	const cardTitle = card.firstChild;
+
+	let newCardTitle = document.createElement("input");
+	newCardTitle.setAttribute("class", "list-title");
+	newCardTitle.setAttribute("id", "title-value");
+	newCardTitle.setAttribute("value", cardTitle.innerText);
+	card.insertBefore(newCardTitle, cardEditBtn);	
+	//set button value back to submit
+	cardEditBtn.setAttribute("value", "submit");
+	card.removeChild(cardTitle);	
+	cardEditBtn.onclick = setListTitle;
 }
 function setListTitle(){
 	let slTitleBtn = this;
