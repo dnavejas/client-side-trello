@@ -9,24 +9,18 @@ function addList() {
 	var br = document.createElement("br");
 
 	var container = document.querySelector(".container");
-	//create a swimlane
 	var swimlane = document.createElement("DIV");
-	//set id attribute
 	swimlane.setAttribute("id", id);
 	swimlane.setAttribute("data-swimlane-id", swimlaneID);
-	//set the class
 	swimlane.setAttribute("class", "swimlane");
 
-	//add to the container
 	container.appendChild(swimlane);
 
-	//create title for each list
 	var listTitle = document.createElement("input");
 	listTitle.setAttribute("id", "title-value" + swimlaneID);
 	listTitle.setAttribute("placeholder", "Enter Title Here");
 	swimlane.appendChild(listTitle);
-	
-	//create a "submit" button
+
 	var submitbtn = document.createElement("input"); 
 	submitbtn.setAttribute("type", "button");
 	submitbtn.setAttribute("id", "title-btn" + id);
@@ -36,8 +30,6 @@ function addList() {
 	swimlane.appendChild(submitbtn);
 	swimlane.appendChild(br);
 	
-	
-	//create a "move swimlane left" button
 	var btnMoveSwimlaneLeft = document.createElement("INPUT");
 	btnMoveSwimlaneLeft.setAttribute("type", "button");
 	btnMoveSwimlaneLeft.setAttribute("value", "⇐");
@@ -46,7 +38,6 @@ function addList() {
 	btnMoveSwimlaneLeft.addEventListener("click", moveSwimlane);
 	swimlane.appendChild(btnMoveSwimlaneLeft);
 
-	//create a "add card" button
 	var btnAddCard = document.createElement("INPUT");
 	btnAddCard.setAttribute("type", "button");
 	btnAddCard.setAttribute("value", "Add Card");
@@ -55,7 +46,6 @@ function addList() {
 	btnAddCard.addEventListener("click", addCard);
 	swimlane.appendChild(btnAddCard);
 
-	//create a "delete swimlane" button
 	var btnDelSwimlane = document.createElement("INPUT");
 	btnDelSwimlane.setAttribute("type", "button");
 	btnDelSwimlane.setAttribute("value", "Delete Lane");
@@ -64,7 +54,6 @@ function addList() {
 	btnDelSwimlane.addEventListener("click", deleteSwimlane);
 	swimlane.appendChild(btnDelSwimlane);
 
-	//create a "move swimlane right" button
 	var btnMoveSwimlaneRight = document.createElement("INPUT");
 	btnMoveSwimlaneRight.setAttribute("type", "button");
 	btnMoveSwimlaneRight.setAttribute("value", "⇒");
@@ -228,18 +217,12 @@ function moveSwimlane() {
 	let slid = this.dataset.swimlaneId;
 	let swimlane = document.querySelector("#swimlane" + slid);
 	let container = document.querySelector(".container");
-	let previous = document.querySelector("#swimlane" + slid).previousSibling;
-	let next = document.querySelector("#swimlane" + slid).nextSibling;
-
-	let pidx = Array.prototype.indexOf.call(container.children, previous);
-	let nidx = Array.prototype.indexOf.call(container.children, next);
-	let cidx = Array.prototype.indexOf.call(container.children, swimlane);
 
 	if(this.dataset.direction == "left") {
-		container.insertBefore(swimlane, container.childNodes[pidx]);
+		container.insertAdjacentElement("afterbegin", swimlane);
 	}
 	else if (this.dataset.direction == "right") {
-		container.insertBefore(swimlane, container.childNodes[++nidx]);
+		container.insertAdjacentElement("beforeend", swimlane);
 	}
 };
 function moveCard(e) {
@@ -256,21 +239,18 @@ function moveCard(e) {
 	let up;
 	let down;
 
-	//try to get left swimlane data, may not exist
 	try {
 		left = document.querySelector("#swimlane" + slid).previousSibling;
 		leftSlid = left.dataset.swimlaneId;
 	}
 	catch (e) {}
 
-	//try to get right swimlane data, may not exist
 	try {
 		right = document.querySelector("#swimlane" + slid).nextSibling;
 		rightSlid = right.dataset.swimlaneId;
 	}
 	catch (e) {}
 
-	//try to get card data above this card
 	let direction = this.dataset.moveDirection;
 
 	if(left != null && direction == "left") {
@@ -349,17 +329,14 @@ function setListTitle(){
 };
 function editSlTitle(e){
 	const editButton = e.target;
-	const swimlane = editButton.parentNode
-
+	const swimlane = editButton.parentNode;
 	const swimlaneTitle = swimlane.firstChild;
 
-	//create title for each list
 	var listTitle = document.createElement("input");
 	listTitle.setAttribute("class", "list-title");
 	listTitle.setAttribute("id", "title-value");
 	listTitle.setAttribute("value", swimlaneTitle.innerText);
 	swimlane.insertBefore(listTitle, editButton);	
-	//set button value back to submit
 	editButton.setAttribute("value", "submit");
 	swimlane.removeChild(swimlaneTitle);	
 	editButton.onclick = setListTitle;
@@ -383,5 +360,21 @@ function setDescription(){
 
 	cardDesc.parentNode.removeChild(cardDesc);
 };
-function editCDesc(){
+function editCDesc(e){
+
+	const editButton = e.target;
+	console.log(editButton);
+	const card = editButton.parentNode;
+	console.log(card);
+	const cardDesc = card.children[3];
+	console.log(cardDesc);
+
+	var cardDescription = document.createElement("textarea");
+	cardDescription.setAttribute("class", "card-desc");
+	cardDescription.setAttribute("id", "c-desc-value");
+	cardDescription.innerHTML = card.innerText;
+	card.insertBefore(cardDescription, editButton);	
+	editButton.setAttribute("value", "submit");
+	card.removeChild(cardDesc);	
+	editButton.onclick = setDescription;
 }
