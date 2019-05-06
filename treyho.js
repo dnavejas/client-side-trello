@@ -263,12 +263,10 @@ function moveCard(e) {
 	}
 	else if(direction == "up") {
 		up = this.parentElement.parentElement.previousElementSibling;
-		// extra logic
 		swimlane.insertBefore(card, up);
 	}
 	else if(direction == "down") {
 		down = this.parentElement.parentElement.nextElementSibling.nextElementSibling;
-		// extra logic
 		swimlane.insertBefore(card, down);
 		
 	}
