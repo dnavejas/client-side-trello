@@ -361,11 +361,8 @@ function setDescription(){
 function editCDesc(e){
 
 	const editButton = e.target;
-	console.log(editButton);
 	const card = editButton.parentNode;
-	console.log(card);
 	const cardDesc = card.children[3];
-	console.log(cardDesc);
 
 	var cardDescription = document.createElement("textarea");
 	cardDescription.setAttribute("class", "card-desc");
